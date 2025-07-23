@@ -1,0 +1,14 @@
+{
+  "name": "vladzimir/f3-tweaks",
+  "description": "Tweaks for comfortable work with Fat-Free Framework",
+  "keywords": ["F3","fatfree","tweaks"],
+  "homepage": "https://github.com/vladzimir/f3-tweaks",
+  "license": "GPL-3.0",
+  "autoload": {
+    "classmap": ["lib/"]
+  },
+  "require": {
+    "php": ">=8.3",
+    "bcosca/fatfree-core": ">=3.9"
+  }
+}
