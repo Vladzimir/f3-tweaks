@@ -1,9 +1,10 @@
 <?php
 namespace Tweaks\Enums;
 
+use Tweaks\Enums\Interfaces\EnumInterface;
 use Tweaks\Enums\Traits\EnumTraitSystem;
 
-enum EnumSystem
+enum EnumSystem implements EnumInterface
 
 {
     use EnumTraitSystem;
