@@ -2,6 +2,8 @@
 
 namespace Tweaks;
 
+use Base;
+use Cache;
 use Tweaks\Helpers\Hives\HelperHiveCookie;
 use Tweaks\Helpers\Hives\HelperHiveEnv;
 use Tweaks\Helpers\Hives\HelperHiveFiles;
