@@ -4,6 +4,8 @@ namespace Tweaks;
 
 use Base;
 use Cache;
+use Tweaks\Helpers\HelperRouting;
+use Tweaks\Helpers\HelperUrl;
 use Tweaks\Helpers\Hives\HelperHiveCookie;
 use Tweaks\Helpers\Hives\HelperHiveEnv;
 use Tweaks\Helpers\Hives\HelperHiveFiles;
@@ -76,6 +78,16 @@ class Tweaks
     public static function system(): HelperHiveSystem
     {
         return HelperHiveSystem::instance();
+    }
+
+    public static function routing(): HelperRouting
+    {
+        return HelperRouting::instance();
+    }
+
+    public static function url(): HelperUrl
+    {
+        return HelperUrl::instance();
     }
 
     public static function cache(): Cache

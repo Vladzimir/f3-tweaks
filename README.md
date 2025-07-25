@@ -37,4 +37,60 @@ session()
 headers()
 system()
 cache()
+url()
+routing()
 ```
+### Simple use of aliases 
+#### Create Enums with you aliases
+```php
+
+namespace Enums\Aliases;
+
+use Tweaks\Enums\Interfaces\EnumInterfaceAlias;
+use Tweaks\Enums\Traits\EnumTraitAlias;
+
+enum EnumAliasAdmin implements EnumInterfaceAlias
+{
+    use EnumTraitAlias;
+
+    case ALIAS_NUMBER_1;
+    case ALIAS_NUMBER_2;
+}
+
+```
+#### Usage in routes config
+```php
+use Enums\Aliases\EnumAliasAdmin;
+use Tweaks\Tweaks;
+use Tweaks\Enums\EnumRouting;
+
+EnumAliasAdmin::ALIAS_NUMBER_1->route(
+    EnumRouting::VERB_GET,
+    "/admin/url1",
+    [ControllerAdmin::class, 'url1'], //Hint and clickable class/method
+    0,
+    5
+);
+
+EnumAliasAdmin::ALIAS_NUMBER_2->rest(
+    "/admin/url2",
+    ControllerAdmin::class
+);
+```
+#### Usage in templates
+```php
+use Enums\Aliases\EnumAliasAdmin;
+use Tweaks\Tweaks;
+
+echo EnumAliasAdmin::ALIAS_NUMBER_1->getUrl();
+```
+#### Simple reroute
+```php
+EnumAliasAdmin::ALIAS_NUMBER_1->reroute();
+```
+
+Alias is generated uniquely name, based on enum and case. Therefore, the enum name must be unique to avoid collisions
+Eg:
+
+EnumAliasAdmin__ALIAS_NUMBER_1
+EnumAliasAdmin__ALIAS_NUMBER_2
