@@ -15,27 +15,33 @@ trait EnumTraitAlias
         return $this->key('__') . $this->name;
     }
 
-    public function getUrl($params = [], $query = []): string
+    public function getUrl(array $params = [], array $query = []): string
     {
         return Tweaks::url()->getUrlByAlias($this, $params, $query);
     }
 
-    public function getUri($params = [], $query = []): string
+    public function getUri(array $params = [], array $query = []): string
     {
         return Tweaks::url()->alias($this, $params, $query);
     }
 
-    public function route($verbs, $uri, $handler, $types = EnumRouting::TYPE_SYNC, $ttl = 0, $kbps = 0): void
-    {
+    public function route(
+        string|array $verbs,
+        string $uri,
+        string|array $handler,
+        string $types = EnumRouting::TYPE_SYNC,
+        int $ttl = 0,
+        int $kbps = 0
+    ): void {
         Tweaks::routing()->route($verbs, $this, $uri, $handler, $types, $ttl, $kbps);
     }
 
-    public function rest($uri, $handler, $ttl = 0, $kbps = 0): void
+    public function rest(string $uri, string|array $handler, int $ttl = 0, int $kbps = 0): void
     {
         Tweaks::routing()->rest($this, $uri, $handler, $ttl, $kbps);
     }
 
-    public function reroute($permanent = false, $die = true): void
+    public function reroute(bool $permanent = false, bool $die = true): void
     {
         Tweaks::routing()->reroute($this, $permanent, $die);
     }

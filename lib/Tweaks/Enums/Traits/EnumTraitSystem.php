@@ -11,7 +11,7 @@ trait EnumTraitSystem
         return $this->name;
     }
 
-    public function set($val, $ttl = 0): void
+    public function set($val, int $ttl = 0): void
     {
         Tweaks::system()->set($this->name(), $val, $ttl);
     }

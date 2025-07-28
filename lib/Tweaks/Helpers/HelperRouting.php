@@ -9,8 +9,15 @@ use Tweaks\Tweaks;
 
 class HelperRouting extends Prefab
 {
-    public function route($verbs, $alias, $uri, $handler, $types = EnumRouting::TYPE_SYNC, $ttl = 0, $kbps = 0): void
-    {
+    public function route(
+        string|array $verbs,
+        string|EnumInterfaceAlias $alias,
+        string $uri,
+        string|array $handler,
+        string $types = EnumRouting::TYPE_SYNC,
+        int $ttl = 0,
+        int $kbps = 0
+    ): void {
         $uri = trim($uri, '/');
         if ($alias instanceof EnumInterfaceAlias) {
             $alias = $alias->name();
@@ -30,8 +37,13 @@ class HelperRouting extends Prefab
         Tweaks::fw()->route($pattern, $handler, $ttl, $kbps);
     }
 
-    public function rest($alias, $uri, $handler, $ttl = 0, $kbps = 0): void
-    {
+    public function rest(
+        string|EnumInterfaceAlias $alias,
+        string $uri,
+        string|array $handler,
+        int $ttl = 0,
+        int $kbps = 0
+    ): void {
         $verbs = [
             EnumRouting::VERB_GET,
             EnumRouting::VERB_POST,
@@ -44,7 +56,7 @@ class HelperRouting extends Prefab
         }
     }
 
-    public function reroute($url = null, $permanent = false, $die = true): void
+    public function reroute(string|EnumInterfaceAlias $url = null, bool $permanent = false, bool $die = true): void
     {
         if ($url instanceof EnumInterfaceAlias) {
             $url = '@' . $url->name();
@@ -53,7 +65,7 @@ class HelperRouting extends Prefab
         Tweaks::fw()->reroute($url, $permanent, $die);
     }
 
-    protected function toDynamic($handler)
+    protected function toDynamic(string|array $handler): string
     {
         if (is_array($handler)) {
             $handler = implode('->', $handler);

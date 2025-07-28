@@ -24,7 +24,7 @@ class HelperHive extends Prefab
         return Tweaks::fw()->exists($this->getHivePrefix() . $key, $val);
     }
 
-    public function set($key, $val = null, $ttl = 0)
+    public function set($key, $val = null, int $ttl = 0): mixed
     {
         return Tweaks::fw()->set($this->getHivePrefix() . $key, $val, $ttl);
     }
@@ -49,7 +49,7 @@ class HelperHive extends Prefab
         return Tweaks::fw()->get($this->hivePrefix, $args);
     }
 
-    public function mset(array $vars, $ttl = 0): void
+    public function mset(array $vars, int $ttl = 0): void
     {
         Tweaks::fw()->mset($vars, $this->hivePrefix, $ttl);
     }
