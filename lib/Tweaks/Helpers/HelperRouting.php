@@ -40,7 +40,7 @@ class HelperRouting extends Prefab
     public function rest(
         string|EnumInterfaceAlias $alias,
         string $uri,
-        string|array $handler,
+        string $handler,
         int $ttl = 0,
         int $kbps = 0
     ): void {

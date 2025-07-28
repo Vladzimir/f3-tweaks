@@ -36,7 +36,7 @@ trait EnumTraitAlias
         Tweaks::routing()->route($verbs, $this, $uri, $handler, $types, $ttl, $kbps);
     }
 
-    public function rest(string $uri, string|array $handler, int $ttl = 0, int $kbps = 0): void
+    public function rest(string $uri, string $handler, int $ttl = 0, int $kbps = 0): void
     {
         Tweaks::routing()->rest($this, $uri, $handler, $ttl, $kbps);
     }
