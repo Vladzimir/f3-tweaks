@@ -11,27 +11,27 @@ class HelperHive extends Prefab
 
     public function &__get($key)
     {
-        return Tweaks::fw()->{$this->hivePrefix . $key};
+        return Tweaks::fw()->{$this->getHivePrefix() . $key};
     }
 
     public function __set($key, $val)
     {
-        return Tweaks::fw()->{$this->hivePrefix . $key} = $val;
+        return Tweaks::fw()->{$this->getHivePrefix() . $key} = $val;
     }
 
     public function exists($key, &$val = null): bool
     {
-        return Tweaks::fw()->exists($this->hivePrefix . $key, $val);
+        return Tweaks::fw()->exists($this->getHivePrefix() . $key, $val);
     }
 
     public function set($key, $val = null, $ttl = 0)
     {
-        return Tweaks::fw()->set($this->hivePrefix . $key, $val, $ttl);
+        return Tweaks::fw()->set($this->getHivePrefix() . $key, $val, $ttl);
     }
 
     public function clear($key): void
     {
-        Tweaks::fw()->clear($this->hivePrefix . $key);
+        Tweaks::fw()->clear($this->getHivePrefix() . $key);
     }
 
     public function clearAll(): void
@@ -41,7 +41,7 @@ class HelperHive extends Prefab
 
     public function get($key, $args = null): mixed
     {
-        return Tweaks::fw()->get($this->hivePrefix . $key, $args);
+        return Tweaks::fw()->get($this->getHivePrefix() . $key, $args);
     }
 
     public function getAll($args = null): mixed
@@ -52,5 +52,10 @@ class HelperHive extends Prefab
     public function mset(array $vars, $ttl = 0): void
     {
         Tweaks::fw()->mset($vars, $this->hivePrefix, $ttl);
+    }
+
+    private function getHivePrefix(): string
+    {
+        return $this->hivePrefix ? $this->hivePrefix . '.' : '';
     }
 }

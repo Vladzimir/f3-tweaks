@@ -2,10 +2,10 @@
 
 namespace Tweaks\Helpers\Hives;
 
-use Tweaks\Enums\EnumHive;
+use Tweaks\Enums\EnumSystem;
 use Tweaks\Helpers\HelperHive;
 
 class HelperHiveEnv extends HelperHive
 {
-    protected string $hivePrefix = EnumHive::ENV;
+    protected string $hivePrefix = EnumSystem::ENV->name;
 }
