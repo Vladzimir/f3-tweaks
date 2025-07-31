@@ -10,6 +10,17 @@ use Tweaks\Tweaks;
 
 class HelperRouting extends Prefab
 {
+    protected string $group = '';
+
+    public function group(string $group, callable $callback): void
+    {
+        $groupBak = $this->group;
+        $group = ltrim($group, '/');
+        $this->group .= '/' . $group;
+        $callback($this);
+        $this->group = $groupBak;
+    }
+
     public function route(
         string|array $verbs,
         string|EnumInterfaceAlias $alias,
@@ -30,8 +41,10 @@ class HelperRouting extends Prefab
             $verbs = implode('|', $verbs);
         }
 
+        $uri = ltrim($this->group . '/' . $uri, '/');
+
         //GET|POST @alias: /uri [sync]
-        $pattern = $verbs . ' ' . ($alias ? '@' . $alias . ': ' : '') . '/' . $uri . ($types ? ' [' . $types . ']' : '');
+        $pattern = $verbs . " " . ($alias ? "'@{$alias}: " : "") . '/' . $uri . ($types ? " [{$types}]" : "");
 
         $handler = $this->toDynamic($handler);
 

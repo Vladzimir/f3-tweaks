@@ -67,15 +67,31 @@ use Tweaks\Enums\EnumRouting;
 EnumAliasAdmin::ALIAS_NUMBER_1->route(
     EnumRouting::VERB_GET,
     "/admin/url1",
-    [ControllerAdmin::class, 'url1'], //Hint and clickable class/method
-    0,
-    5
+    [ControllerAdmin::class, 'method1'], //Hint and clickable class/method
+    0, //Cache none
+    5 //Throttle 5kbps
 );
 
 EnumAliasAdmin::ALIAS_NUMBER_2->rest(
     "/admin/url2",
     ControllerAdmin::class
 );
+```
+OR with group
+```php
+Tweaks::routing()->group("/admin", function () {
+    EnumAliasAdmin::ALIAS_NUMBER_1->route(
+        EnumRouting::VERB_GET,
+        "/url1",
+        [ControllerAdmin::class, 'method1']
+    );
+
+    EnumAliasAdmin::ALIAS_NUMBER_2->route(
+        EnumRouting::VERB_GET,
+        "/url2",
+        [ControllerAdmin::class, 'method2']
+    );
+});
 ```
 #### Usage in templates
 ```php
