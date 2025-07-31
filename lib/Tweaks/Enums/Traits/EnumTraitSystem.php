@@ -20,4 +20,9 @@ trait EnumTraitSystem
     {
         return Tweaks::system()->get($this->name(), $args);
     }
+
+    public function mset(array $vars, int $ttl = 0): void
+    {
+        Tweaks::fw()->mset($vars, $this->name() . '.', $ttl);
+    }
 }

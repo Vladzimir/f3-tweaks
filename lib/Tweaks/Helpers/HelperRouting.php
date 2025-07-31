@@ -4,6 +4,7 @@ namespace Tweaks\Helpers;
 
 use Prefab;
 use Tweaks\Enums\EnumRouting;
+use Tweaks\Enums\EnumVerbs;
 use Tweaks\Enums\Interfaces\EnumInterfaceAlias;
 use Tweaks\Tweaks;
 
@@ -45,10 +46,10 @@ class HelperRouting extends Prefab
         int $kbps = 0
     ): void {
         $verbs = [
-            EnumRouting::VERB_GET,
-            EnumRouting::VERB_POST,
-            EnumRouting::VERB_PUT,
-            EnumRouting::VERB_DELETE,
+            EnumVerbs::GET->name(),
+            EnumVerbs::POST->name(),
+            EnumVerbs::PUT->name(),
+            EnumVerbs::DELETE->name(),
         ];
 
         foreach ($verbs as $verb) {
