@@ -44,7 +44,7 @@ class HelperRouting extends Prefab
         $uri = ltrim($this->group . '/' . $uri, '/');
 
         //GET|POST @alias: /uri [sync]
-        $pattern = $verbs . " " . ($alias ? "'@{$alias}: " : "") . '/' . $uri . ($types ? " [{$types}]" : "");
+        $pattern = $verbs . " " . ($alias ? "@{$alias}: " : "") . '/' . $uri . ($types ? " [{$types}]" : "");
 
         $handler = $this->toDynamic($handler);
 
