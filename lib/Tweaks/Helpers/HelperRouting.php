@@ -4,6 +4,7 @@ namespace Tweaks\Helpers;
 
 use Prefab;
 use Tweaks\Enums\EnumRouting;
+use Tweaks\Enums\EnumSystem;
 use Tweaks\Enums\EnumVerbs;
 use Tweaks\Enums\Interfaces\EnumInterfaceAlias;
 use Tweaks\Tweaks;
@@ -77,6 +78,16 @@ class HelperRouting extends Prefab
         }
 
         Tweaks::fw()->reroute($url, $permanent, $die);
+    }
+
+    public function isCurrentAlias(string|EnumInterfaceAlias $alias): bool
+    {
+        if ($alias instanceof EnumInterfaceAlias) {
+            $alias = $alias->name();
+        }
+        $alias = ltrim($alias, '@');
+
+        return EnumSystem::ALIAS->get() === $alias;
     }
 
     protected function toDynamic(string|array $handler): string

@@ -67,7 +67,7 @@ use Tweaks\Enums\EnumRouting;
 EnumAliasAdmin::ALIAS_NUMBER_1->route(
     EnumRouting::VERB_GET,
     "/admin/url1",
-    [ControllerAdmin::class, 'method1'], //Hint and clickable class/method
+    [ControllerAdmin::class, 'method1'], //Hint and clickable class/method. Autodetect is static/dynamic method.
     0, //Cache none
     5 //Throttle 5kbps
 );
@@ -76,6 +76,11 @@ EnumAliasAdmin::ALIAS_NUMBER_2->rest(
     "/admin/url2",
     ControllerAdmin::class
 );
+
+//Check is current alias
+EnumAliasAdmin::ALIAS_NUMBER_1->isCurrentAlias();
+//OR from Tweaks
+Tweaks::routing()->isCurrentAlias('@ALIAS_NUMBER_2');
 ```
 OR with group
 ```php

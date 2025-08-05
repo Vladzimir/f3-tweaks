@@ -45,4 +45,9 @@ trait EnumTraitAlias
     {
         Tweaks::routing()->reroute($this, $permanent, $die);
     }
+
+    public function isCurrentAlias(): bool
+    {
+        return Tweaks::routing()->isCurrentAlias($this);
+    }
 }
