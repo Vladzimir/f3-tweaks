@@ -81,7 +81,7 @@ class HelperRouting extends Prefab
 
     protected function toDynamic(string|array $handler): string
     {
-        if (is_array($handler)) {
+        if (is_array($handler) && !is_callable($handler)) {
             $handler = implode('->', $handler);
         }
         return $handler;
