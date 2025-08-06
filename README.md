@@ -39,6 +39,11 @@ system()
 cache()
 url()
 routing()
+base64()
+cipher()
+hasher()
+password()
+scrambler()
 ```
 ### Simple use of aliases 
 #### Create Enums with you aliases

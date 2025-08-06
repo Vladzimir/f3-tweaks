@@ -4,6 +4,11 @@ namespace Tweaks;
 
 use Base;
 use Cache;
+use Helpers\HelperCipher;
+use Helpers\HelperPassword;
+use Helpers\HelperScrambler;
+use Tweaks\Helpers\HelperBase64;
+use Tweaks\Helpers\HelperHasher;
 use Tweaks\Helpers\HelperRouting;
 use Tweaks\Helpers\HelperUrl;
 use Tweaks\Helpers\Hives\HelperHiveCookie;
@@ -88,6 +93,31 @@ class Tweaks
     public static function url(): HelperUrl
     {
         return HelperUrl::instance();
+    }
+
+    public static function base64(): HelperBase64
+    {
+        return HelperBase64::instance();
+    }
+
+    public static function cipher(): HelperCipher
+    {
+        return HelperCipher::instance();
+    }
+
+    public static function hasher(): HelperHasher
+    {
+        return HelperHasher::instance();
+    }
+
+    public static function password(): HelperPassword
+    {
+        return HelperPassword::instance();
+    }
+
+    public static function scrambler(): HelperScrambler
+    {
+        return HelperScrambler::instance();
     }
 
     public static function cache(): Cache
