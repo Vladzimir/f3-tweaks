@@ -30,6 +30,7 @@ class HelperHasher extends Prefab
         $hash = $this->deriveBytes($data, $length, $seed);
         if (!$binary) {
             $hash = Tweaks::base64()->urlSafeOriginalBase64Encode($hash);
+            $hash = substr($hash, 0, $length);
         }
 
         return $hash;
