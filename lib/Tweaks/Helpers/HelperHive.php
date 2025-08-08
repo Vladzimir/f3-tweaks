@@ -51,7 +51,7 @@ class HelperHive extends Prefab
 
     public function mset(array $vars, int $ttl = 0): void
     {
-        Tweaks::fw()->mset($vars, $this->hivePrefix, $ttl);
+        Tweaks::fw()->mset($vars, $this->getHivePrefix(), $ttl);
     }
 
     private function getHivePrefix(): string
