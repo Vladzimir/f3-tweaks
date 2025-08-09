@@ -20,7 +20,7 @@ class HelperCipher extends Prefab
     {
         $nonce = $this->randomString(12, true);
         $tag = '';
-        $passphrase = Tweaks::hasher()->hash($key, System::SEED->get(), self::KEY_LENGTH, true);
+        $passphrase = Tweaks::hasher()->deriveBytes($key, self::KEY_LENGTH, $nonce);
 
         $ciphertext = openssl_encrypt($plaintext, self::CIPHER_ALGO, $passphrase, OPENSSL_RAW_DATA, $nonce, $tag);
 
@@ -42,42 +42,56 @@ class HelperCipher extends Prefab
         $nonce = substr($data, 0, 12);
         $tag = substr($data, 12, 16);
         $ciphertext = substr($data, 28);
-        $passphrase = Tweaks::hasher()->hash($key, System::SEED->get(), self::KEY_LENGTH, true);
+        $passphrase = Tweaks::hasher()->deriveBytes($key, self::KEY_LENGTH, $nonce);
 
         return openssl_decrypt($ciphertext, self::CIPHER_ALGO, $passphrase, OPENSSL_RAW_DATA, $nonce, $tag);
     }
 
+    /**
+     * @throws RandomException
+     */
     public function encryptOneTimePad(string $data, string $key, $binary = false): string
     {
-        $randomBytes = Tweaks::hasher()->deriveBytes($key, strlen($data));
+        $strlen = strlen($data);
+        $nonce = $this->randomString(12, true);
 
-        $encrypt = $data ^ $randomBytes;
-        $hash = Tweaks::hasher()->hash($encrypt, $key, 32, true);
+        $blob = Tweaks::hasher()->deriveBytes($key, 32 + $strlen, $nonce);
 
-        $ciphertext = $hash . $encrypt;
+        $macKey = substr($blob, 0, 32);
+        $streamKey = substr($blob, 32);
+
+        $ciphertext = $data ^ $streamKey;
+        $tag = Tweaks::hasher()->deriveBytes($nonce . $ciphertext, 16, $macKey);
+
+        $encrypt = $nonce . $tag . $ciphertext;
 
         if (!$binary) {
-            $ciphertext = Tweaks::base64()->urlSafeOriginalBase64Encode($ciphertext);
+            $encrypt = Tweaks::base64()->urlSafeOriginalBase64Encode($encrypt);
         }
 
-        return $ciphertext;
+        return $encrypt;
     }
 
-    public function decryptOneTimePad(string $data, string $key, $binary = false): string
+    public function decryptOneTimePad(string $encrypt, string $key, $binary = false): string
     {
         if (!$binary) {
-            $data = Tweaks::base64()->urlSafeOriginalBase64Decode($data);
+            $encrypt = Tweaks::base64()->urlSafeOriginalBase64Decode($encrypt);
         }
 
-        $hash = substr($data, 0, 32);
-        $ciphertext = substr($data, 32);
+        $nonce = substr($encrypt, 0, 12);
+        $tagExternal = substr($encrypt, 12, 16);
+        $ciphertext = substr($encrypt, 28);
+        $strlen = strlen($ciphertext);
 
-        $crc = Tweaks::hasher()->hash($ciphertext, $key, 32, true);
+        $blob = Tweaks::hasher()->deriveBytes($key, 32 + $strlen, $nonce);
 
-        if (Tweaks::hasher()->verify($hash, $crc)) {
-            $randomBytes = Tweaks::hasher()->deriveBytes($key, strlen($ciphertext));
+        $macKey = substr($blob, 0, 32);
+        $streamKey = substr($blob, 32);
 
-            return $data ^ $randomBytes;
+        $tagInternal = Tweaks::hasher()->deriveBytes($nonce . $ciphertext, 16, $macKey);
+
+        if (Tweaks::hasher()->verify($tagInternal, $tagExternal)) {
+            return $ciphertext ^ $streamKey;
         }
         return false;
     }
