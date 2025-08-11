@@ -61,7 +61,7 @@ class HelperCipher extends Prefab
         $streamKey = substr($blob, 32);
 
         $ciphertext = $data ^ $streamKey;
-        $tag = Tweaks::hasher()->deriveBytes($nonce . $ciphertext, 16, $macKey);
+        $tag = Tweaks::hasher()->signature($nonce . $ciphertext, $macKey, 16, true);
 
         $encrypt = $nonce . $tag . $ciphertext;
 
@@ -88,7 +88,7 @@ class HelperCipher extends Prefab
         $macKey = substr($blob, 0, 32);
         $streamKey = substr($blob, 32);
 
-        $tagInternal = Tweaks::hasher()->deriveBytes($nonce . $ciphertext, 16, $macKey);
+        $tagInternal = Tweaks::hasher()->signature($nonce . $ciphertext, $macKey, 16, true);
 
         if (Tweaks::hasher()->verify($tagInternal, $tagExternal)) {
             return $ciphertext ^ $streamKey;

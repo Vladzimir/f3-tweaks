@@ -41,8 +41,8 @@ class HelperScrambler extends Prefab
         $indices = range(0, $bytes - 1);
 
         usort($indices, function ($a, $b) use ($key) {
-            $hashA = Tweaks::hasher()->hash($key, $a, 64, true);
-            $hashB = Tweaks::hasher()->hash($key, $b, 64, true);
+            $hashA = Tweaks::hasher()->deriveBytes($key, 32, $a);
+            $hashB = Tweaks::hasher()->deriveBytes($key, 32, $b);
             return strcmp($hashA, $hashB);
         });
         return $indices;
