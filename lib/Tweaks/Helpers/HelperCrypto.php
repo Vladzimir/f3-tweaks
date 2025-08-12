@@ -6,7 +6,7 @@ use Prefab;
 use Tweaks\Enums\EnumSystem as System;
 use Tweaks\Tweaks;
 
-class HelperHasher extends Prefab
+class HelperCrypto extends Prefab
 {
     private const string HKDF_ALGO = 'sha3-512';
     private const int HKDF_HASH_LEN = 64; // sha3-512 -> 64 bytes

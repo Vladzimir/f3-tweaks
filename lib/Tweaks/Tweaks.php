@@ -8,7 +8,7 @@ use Helpers\HelperCipher;
 use Helpers\HelperPassword;
 use Helpers\HelperScrambler;
 use Tweaks\Helpers\HelperBase64;
-use Tweaks\Helpers\HelperHasher;
+use Tweaks\Helpers\HelperCrypto;
 use Tweaks\Helpers\HelperRouting;
 use Tweaks\Helpers\HelperUrl;
 use Tweaks\Helpers\Hives\HelperHiveCookie;
@@ -105,9 +105,9 @@ class Tweaks
         return HelperCipher::instance();
     }
 
-    public static function hasher(): HelperHasher
+    public static function crypto(): HelperCrypto
     {
-        return HelperHasher::instance();
+        return HelperCrypto::instance();
     }
 
     public static function password(): HelperPassword
