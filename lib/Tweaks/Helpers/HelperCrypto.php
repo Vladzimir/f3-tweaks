@@ -9,6 +9,7 @@ use Tweaks\Tweaks;
 class HelperCrypto extends Prefab
 {
     private const string HKDF_ALGO = 'sha3-512';
+    private const string HMAC_ALGO = 'sha3-512';
     private const int HKDF_HASH_LEN = 64; // sha3-512 -> 64 bytes
     public const int MAX_LENGTH = self::HKDF_HASH_LEN * 255; // 64 * 255 = 16320
 
@@ -38,7 +39,7 @@ class HelperCrypto extends Prefab
 
     public function signature(string $data, string $key, int $maxLength = 64, $binary = false): string
     {
-        $hash = hash_hmac(self::HKDF_ALGO, $data, $key, true);
+        $hash = hash_hmac(self::HMAC_ALGO, $data, $key, true);
         if (!$binary) {
             $hash = Tweaks::base64()->urlSafeOriginalBase64Encode($hash);
         }
