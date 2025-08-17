@@ -20,7 +20,7 @@ class HelperCipher extends Prefab
     {
         $nonce = $this->randomString(12, true);
         $tag = '';
-        $passphrase = Tweaks::hasher()->deriveBytes($key, self::KEY_LENGTH, $nonce);
+        $passphrase = Tweaks::crypto()->deriveBytes($key, self::KEY_LENGTH, $nonce);
 
         $ciphertext = openssl_encrypt($plaintext, self::CIPHER_ALGO, $passphrase, OPENSSL_RAW_DATA, $nonce, $tag);
 
@@ -42,7 +42,7 @@ class HelperCipher extends Prefab
         $nonce = substr($data, 0, 12);
         $tag = substr($data, 12, 16);
         $ciphertext = substr($data, 28);
-        $passphrase = Tweaks::hasher()->deriveBytes($key, self::KEY_LENGTH, $nonce);
+        $passphrase = Tweaks::crypto()->deriveBytes($key, self::KEY_LENGTH, $nonce);
 
         return openssl_decrypt($ciphertext, self::CIPHER_ALGO, $passphrase, OPENSSL_RAW_DATA, $nonce, $tag);
     }
@@ -55,13 +55,13 @@ class HelperCipher extends Prefab
         $strlen = strlen($data);
         $nonce = $this->randomString(12, true);
 
-        $blob = Tweaks::hasher()->deriveBytes($key, 32 + $strlen, $nonce);
+        $blob = Tweaks::crypto()->deriveBytes($key, 32 + $strlen, $nonce);
 
         $macKey = substr($blob, 0, 32);
         $streamKey = substr($blob, 32);
 
         $ciphertext = $data ^ $streamKey;
-        $tag = Tweaks::hasher()->signature($nonce . $ciphertext, $macKey, 16, true);
+        $tag = Tweaks::crypto()->signature($nonce . $ciphertext, $macKey, 16, true);
 
         $encrypt = $nonce . $tag . $ciphertext;
 
@@ -83,14 +83,14 @@ class HelperCipher extends Prefab
         $ciphertext = substr($encrypt, 28);
         $strlen = strlen($ciphertext);
 
-        $blob = Tweaks::hasher()->deriveBytes($key, 32 + $strlen, $nonce);
+        $blob = Tweaks::crypto()->deriveBytes($key, 32 + $strlen, $nonce);
 
         $macKey = substr($blob, 0, 32);
         $streamKey = substr($blob, 32);
 
-        $tagInternal = Tweaks::hasher()->signature($nonce . $ciphertext, $macKey, 16, true);
+        $tagInternal = Tweaks::crypto()->signature($nonce . $ciphertext, $macKey, 16, true);
 
-        if (Tweaks::hasher()->verify($tagInternal, $tagExternal)) {
+        if (Tweaks::crypto()->verify($tagInternal, $tagExternal)) {
             return $ciphertext ^ $streamKey;
         }
         return false;

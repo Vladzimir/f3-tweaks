@@ -104,7 +104,6 @@ class Tweaks
     {
         return HelperCipher::instance();
     }
-
     public static function crypto(): HelperCrypto
     {
         return HelperCrypto::instance();
