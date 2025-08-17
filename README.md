@@ -67,10 +67,10 @@ enum EnumAliasAdmin implements EnumInterfaceAlias
 ```php
 use Enums\Aliases\EnumAliasAdmin;
 use Tweaks\Tweaks;
-use Tweaks\Enums\EnumRouting;
+use Tweaks\Enums\EnumVerbs;
 
 EnumAliasAdmin::ALIAS_NUMBER_1->route(
-    EnumRouting::VERB_GET,
+    EnumVerbs::GET,
     "/admin/url1",
     [ControllerAdmin::class, 'method1'], //Hint and clickable class/method. Autodetect is static/dynamic method.
     0, //Cache none
@@ -91,13 +91,13 @@ OR with group
 ```php
 Tweaks::routing()->group("/admin", function () {
     EnumAliasAdmin::ALIAS_NUMBER_1->route(
-        EnumRouting::VERB_GET,
+        EnumVerbs::GET,
         "/url1",
         [ControllerAdmin::class, 'method1']
     );
 
     EnumAliasAdmin::ALIAS_NUMBER_2->route(
-        EnumRouting::VERB_GET,
+        EnumVerbs::GET,
         "/url2",
         [ControllerAdmin::class, 'method2']
     );
