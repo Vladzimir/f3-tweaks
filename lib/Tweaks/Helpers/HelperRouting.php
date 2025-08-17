@@ -23,7 +23,7 @@ class HelperRouting extends Prefab
     }
 
     public function route(
-        string|array $verbs,
+        string|array|EnumVerbs $verbs,
         string|EnumInterfaceAlias $alias,
         string $uri,
         string|array $handler,
@@ -38,9 +38,18 @@ class HelperRouting extends Prefab
         $alias = ltrim($alias, '@');
         $types = trim($types, '[]');
 
-        if (is_array($verbs)) {
-            $verbs = implode('|', $verbs);
+        if (!is_array($verbs)) {
+            $verbs = [$verbs];
         }
+
+        $verbs = array_map(function ($verb) {
+            if ($verb instanceof EnumVerbs) {
+                return $verb->name();
+            }
+            return $verb;
+        }, $verbs);
+
+        $verbs = implode('|', $verbs);
 
         $uri = ltrim($this->group . '/' . $uri, '/');
 
