@@ -14,6 +14,7 @@ class HelperCrypto extends Prefab
     private const int HASH_BLOCK = 16;
     private const int HKDF_HASH_LEN = 64; // sha3-512 -> 64 bytes
     public const int MAX_LENGTH = self::HKDF_HASH_LEN * 255; // 64 * 255 = 16320
+    protected string $secret;
 
     public function verify($hashInternal, $hashExternal): bool
     {
@@ -53,7 +54,7 @@ class HelperCrypto extends Prefab
     public function fastHash(string $data, int $length = 64, $binary = false): string
     {
         $num = (int)ceil($length / self::HASH_BLOCK);
-        $seed = System::SEED->get();
+        $seed = unpack('q', System::SEED->get())[1];
         $hash = '';
 
         for ($i = 0; $i < $num; $i++) {
