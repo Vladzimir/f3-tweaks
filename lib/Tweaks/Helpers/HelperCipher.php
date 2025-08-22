@@ -5,7 +5,6 @@ namespace Helpers;
 
 use Prefab;
 use Random\RandomException;
-use Tweaks\Enums\EnumSystem as System;
 use Tweaks\Tweaks;
 
 class HelperCipher extends Prefab
@@ -16,11 +15,11 @@ class HelperCipher extends Prefab
     /**
      * @throws RandomException
      */
-    public function encrypt(string $plaintext, string $key, $binary = false): string
+    public function encrypt(string $plaintext, string $key, bool $binary = false, string $seed = ''): string
     {
         $nonce = $this->randomString(12, true);
         $tag = '';
-        $passphrase = Tweaks::crypto()->deriveBytes($key, self::KEY_LENGTH, $nonce);
+        $passphrase = Tweaks::crypto()->deriveBytes($key, self::KEY_LENGTH, $nonce, $seed);
 
         $ciphertext = openssl_encrypt($plaintext, self::CIPHER_ALGO, $passphrase, OPENSSL_RAW_DATA, $nonce, $tag);
 
@@ -33,7 +32,7 @@ class HelperCipher extends Prefab
         return $data;
     }
 
-    public function decrypt(string $data, string $key, $binary = false): string
+    public function decrypt(string $data, string $key, bool $binary = false, string $seed = ''): string
     {
         if (!$binary) {
             $data = Tweaks::base64()->urlSafeOriginalBase64Decode($data);
@@ -42,7 +41,7 @@ class HelperCipher extends Prefab
         $nonce = substr($data, 0, 12);
         $tag = substr($data, 12, 16);
         $ciphertext = substr($data, 28);
-        $passphrase = Tweaks::crypto()->deriveBytes($key, self::KEY_LENGTH, $nonce);
+        $passphrase = Tweaks::crypto()->deriveBytes($key, self::KEY_LENGTH, $nonce, $seed);
 
         return openssl_decrypt($ciphertext, self::CIPHER_ALGO, $passphrase, OPENSSL_RAW_DATA, $nonce, $tag);
     }
@@ -50,12 +49,12 @@ class HelperCipher extends Prefab
     /**
      * @throws RandomException
      */
-    public function encryptOneTimePad(string $data, string $key, $binary = false): string
+    public function encryptOneTimePad(string $data, string $key, bool $binary = false, string $seed = ''): string
     {
         $strlen = strlen($data);
         $nonce = $this->randomString(12, true);
 
-        $blob = Tweaks::crypto()->deriveBytes($key, 32 + $strlen, $nonce);
+        $blob = Tweaks::crypto()->deriveBytes($key, 32 + $strlen, $nonce, $seed);
 
         $macKey = substr($blob, 0, 32);
         $streamKey = substr($blob, 32);
@@ -72,7 +71,7 @@ class HelperCipher extends Prefab
         return $encrypt;
     }
 
-    public function decryptOneTimePad(string $encrypt, string $key, $binary = false): string
+    public function decryptOneTimePad(string $encrypt, string $key, bool $binary = false, string $seed = ''): string
     {
         if (!$binary) {
             $encrypt = Tweaks::base64()->urlSafeOriginalBase64Decode($encrypt);
@@ -83,7 +82,7 @@ class HelperCipher extends Prefab
         $ciphertext = substr($encrypt, 28);
         $strlen = strlen($ciphertext);
 
-        $blob = Tweaks::crypto()->deriveBytes($key, 32 + $strlen, $nonce);
+        $blob = Tweaks::crypto()->deriveBytes($key, 32 + $strlen, $nonce, $seed);
 
         $macKey = substr($blob, 0, 32);
         $streamKey = substr($blob, 32);
